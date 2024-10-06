@@ -1,0 +1,211 @@
+Given the root of a binary tree, return the preorder traversal of its nodes' values
+#include <iostream>
+#include <vector>
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    std::vector<int> preorderTraversal(TreeNode* root) {
+        std::vector<int> result;
+        preorder(root, result);
+        return result;
+    }
+
+private:
+    void preorder(TreeNode* node, std::vector<int>& result) {
+        if (node == nullptr) return;
+        result.push_back(node->val);    // Visit root
+        preorder(node->left, result);   // Visit left subtree
+        preorder(node->right, result);  // Visit right subtree
+    }
+};
+
+int main() {
+    // Example usage:
+    TreeNode* root = new TreeNode(1);
+    root->right = new TreeNode(2);
+    root->right->left = new TreeNode(3);
+
+    Solution solution;
+    std::vector<int> traversal = solution.preorderTraversal(root);
+
+    std::cout << "Preorder Traversal: ";
+    for (int val : traversal) {
+        std::cout << val << " ";
+    }
+
+    return 0;
+}
+
+
+Given the root of a binary tree, return the postorder traversal of its nodes' values
+
+#include <iostream>
+#include <vector>
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    std::vector<int> postorderTraversal(TreeNode* root) {
+        std::vector<int> result;
+        postorder(root, result);
+        return result;
+    }
+
+private:
+    void postorder(TreeNode* node, std::vector<int>& result) {
+        if (node == nullptr) return;
+        postorder(node->left, result);   // Visit left subtree
+        postorder(node->right, result);  // Visit right subtree
+        result.push_back(node->val);     // Visit root
+    }
+};
+
+int main() {
+    // Example usage:
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    Solution solution;
+    std::vector<int> traversal = solution.postorderTraversal(root);
+
+    std::cout << "Postorder Traversal: ";
+    for (int val : traversal) {
+        std::cout << val << " ";
+    }
+
+    return 0;
+}
+
+Given the root of a binary tree, return the maximum path sum of any non-empty path
+
+#include <iostream>
+#include <climits> // For INT_MIN
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        int maxSum = INT_MIN;
+        maxPathDown(root, maxSum);
+        return maxSum;
+    }
+    
+private:
+    // Helper function to compute the max path sum from a node downwards
+    int maxPathDown(TreeNode* node, int &maxSum) {
+        if (node == nullptr) return 0;
+        
+        // Compute the max path sum of the left and right subtrees
+        int left = std::max(0, maxPathDown(node->left, maxSum));  // Ignore paths with negative sums
+        int right = std::max(0, maxPathDown(node->right, maxSum)); // Ignore paths with negative sums
+        
+        // Calculate the maximum path sum through this node
+        maxSum = std::max(maxSum, left + right + node->val);
+        
+        // Return the max sum of a path that starts from this node and goes down to one of its subtrees
+        return std::max(left, right) + node->val;
+    }
+};
+
+int main() {
+    // Construct a sample tree: 
+    //       -10
+    //       /  \
+    //      9   20
+    //         /  \
+    //        15   7
+    TreeNode* root = new TreeNode(-10);
+    root->left = new TreeNode(9);
+    root->right = new TreeNode(20);
+    root->right->left = new TreeNode(15);
+    root->right->right = new TreeNode(7);
+    
+    Solution sol;
+    std::cout << "Maximum path sum: " << sol.maxPathSum(root) << std::endl;
+    
+    return 0;
+}
+
+
+Given the root of a binary tree, return the inorder traversal of its nodes' values
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> result;
+        inorder(root, result);
+        return result;
+    }
+
+private:
+    void inorder(TreeNode* node, vector<int> &result) {
+        if (node == nullptr) return;
+        
+        // Traverse the left subtree
+        inorder(node->left, result);
+        
+        // Visit the current node
+        result.push_back(node->val);
+        
+        // Traverse the right subtree
+        inorder(node->right, result);
+    }
+};
+
+int main() {
+    // Construct a sample tree:
+    //       1
+    //        \
+    //         2
+    //        /
+    //       3
+    TreeNode* root = new TreeNode(1);
+    root->right = new TreeNode(2);
+    root->right->left = new TreeNode(3);
+    
+    Solution sol;
+    vector<int> inorderResult = sol.inorderTraversal(root);
+    
+    // Output the inorder traversal result
+    for (int val : inorderResult) {
+        cout << val << " ";
+    }
+    
+    return 0;
+}
+  
